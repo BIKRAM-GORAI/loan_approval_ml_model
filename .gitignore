@@ -1,0 +1,29 @@
+# Python environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Jupyter & Editor files
+.ipynb_checkpoints/
+.virtual_documents/
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Environment variables & secrets
+.env
+*.env
+
+# Logs
+*.log

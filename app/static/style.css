@@ -1,0 +1,366 @@
+/* LoanIQ Frontend Styling */
+
+
+/* --------------------------------------------------
+   Global Styles
+-------------------------------------------------- */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+}
+
+
+/* --------------------------------------------------
+   Main Container
+-------------------------------------------------- */
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* --------------------------------------------------
+   Header
+-------------------------------------------------- */
+
+h1 {
+    margin: 0;
+    font-size: 42px;
+    color: #1d4ed8;
+}
+
+.container > p {
+    margin-top: 8px;
+    margin-bottom: 35px;
+    color: #6b7280;
+    font-size: 18px;
+}
+
+
+/* --------------------------------------------------
+   Section Headings
+-------------------------------------------------- */
+
+h2 {
+    margin-top: 30px;
+    margin-bottom: 18px;
+    font-size: 22px;
+    color: #111827;
+}
+
+
+/* --------------------------------------------------
+   Form Layout
+-------------------------------------------------- */
+
+#loanForm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+
+/*
+   Section headings should occupy
+   the complete row
+*/
+
+#loanForm h2 {
+    grid-column: 1 / -1;
+}
+
+
+/* --------------------------------------------------
+   Input Fields
+-------------------------------------------------- */
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+    outline: none;
+}
+
+
+/* Input focus effect */
+
+input:focus,
+select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+
+/* --------------------------------------------------
+   Submit Button
+-------------------------------------------------- */
+
+button {
+    grid-column: 1 / -1;
+
+    margin-top: 15px;
+
+    padding: 14px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: #2563eb;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+
+/* --------------------------------------------------
+   Prediction Result
+-------------------------------------------------- */
+
+#result {
+    margin-top: 30px;
+    padding: 20px;
+
+    border-radius: 8px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    text-align: center;
+}
+
+
+/* --------------------------------------------------
+   Mobile Responsive Design
+-------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .container {
+        width: 95%;
+        padding: 25px;
+        margin: 20px auto;
+    }
+
+    #loanForm {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 34px;
+    }
+
+}
+
+/* Sample Applicant Section */
+
+.sample-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #ddd;
+}
+
+.sample-section p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.sample-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.sample-btn {
+    padding: 12px 16px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #2563eb;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: left;
+    transition: 0.2s;
+}
+
+.sample-btn:hover {
+    background: #f0f5ff;
+    border-color: #2563eb;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 700px) {
+
+    .sample-buttons {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* --------------------------------------------------
+   Prediction Result Card
+-------------------------------------------------- */
+
+.result-card {
+    display: none;
+
+    margin-top: 40px;
+    padding: 30px;
+
+    border-radius: 14px;
+
+    text-align: center;
+
+    border: 1px solid #ddd;
+}
+
+
+/* Result Icon */
+
+.result-icon {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 32px;
+    font-weight: bold;
+}
+
+
+/* Result Title */
+
+.result-card h2 {
+    margin: 10px 0;
+
+    font-size: 28px;
+}
+
+
+/* Probability */
+
+.result-card p {
+    font-size: 16px;
+}
+
+
+/* Probability Bar */
+
+.probability-container {
+    width: 100%;
+
+    margin: 25px 0;
+}
+
+.probability-bar {
+    width: 100%;
+    height: 12px;
+
+    background: #e5e7eb;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+#probabilityFill {
+    height: 100%;
+
+    width: 0%;
+
+    border-radius: 10px;
+
+    transition: width 0.7s ease;
+}
+
+
+/* Approved */
+
+.result-card.approved {
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+
+.result-card.approved .result-icon {
+    background: #22c55e;
+    color: white;
+}
+
+.result-card.approved h2 {
+    color: #15803d;
+}
+
+.result-card.approved #probabilityFill {
+    background: #22c55e;
+}
+
+
+/* Rejected */
+
+.result-card.rejected {
+    background: #fef2f2;
+    border-color: #fca5a5;
+}
+
+.result-card.rejected .result-icon {
+    background: #ef4444;
+    color: white;
+}
+
+.result-card.rejected h2 {
+    color: #b91c1c;
+}
+
+.result-card.rejected #probabilityFill {
+    background: #ef4444;
+}
+
+
+/* Reset Button */
+
+#resetButton {
+    width: auto;
+
+    padding: 11px 20px;
+
+    margin-top: 15px;
+
+    background: #374151;
+
+    border-radius: 7px;
+}
+
+#resetButton:hover {
+    background: #111827;
+}

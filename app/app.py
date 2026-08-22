@@ -1,6 +1,6 @@
 # LoanIQ Flask Backend
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 import joblib
 
@@ -89,6 +89,10 @@ def health():
 # Prediction Route
 # --------------------------------------------------
 
+# --------------------------------------------------
+# Prediction Route
+# --------------------------------------------------
+
 @app.route("/predict", methods=["POST"])
 def predict():
 
@@ -136,10 +140,17 @@ def predict():
 
 
         # --------------------------------------------------
+        # Scale processed input
+        # --------------------------------------------------
+
+        scaled_data = scaler.transform(processed_data)
+
+
+        # --------------------------------------------------
         # Make prediction
         # --------------------------------------------------
 
-        prediction = model.predict(processed_data)[0]
+        prediction = model.predict(scaled_data)[0]
 
 
         # --------------------------------------------------
@@ -150,7 +161,7 @@ def predict():
 
         if hasattr(model, "predict_proba"):
 
-            probability = model.predict_proba(processed_data)[0][1]
+            probability = model.predict_proba(scaled_data)[0][1]
 
 
         # --------------------------------------------------
@@ -173,6 +184,7 @@ def predict():
         }
 
         if probability is not None:
+
             response["approval_probability"] = round(
                 float(probability),
                 4
@@ -195,6 +207,11 @@ def predict():
             "error": str(e)
         }), 500
 
+# Serve LoanIQ Frontend
+
+@app.route("/app")
+def frontend():
+    return render_template("index.html")
 
 # --------------------------------------------------
 # Run Flask Application

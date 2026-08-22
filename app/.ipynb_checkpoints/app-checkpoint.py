@@ -1,33 +1,20 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "67defa2c-11c8-4a36-8bd4-b452e464486f",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.14.6"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+# Flask Backend - LoanIQ
+
+from flask import Flask, request, jsonify
+import joblib
+
+app = Flask(__name__)
+
+# Load trained model
+model = joblib.load("../models/loan_approval_model.pkl")
+preprocessor = joblib.load("../models/loan_approval_preprocessor.pkl")
+scaler = joblib.load("../models/loan_approval_scaler.pkl")
+
+
+@app.route("/")
+def home():
+    return "LoanIQ API is running."
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

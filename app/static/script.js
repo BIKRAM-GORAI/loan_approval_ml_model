@@ -288,6 +288,16 @@ function loadSample(index) {
   const sample = sampleApplicants[index];
   if (!sample) return;
 
+  // Highlight selected button
+  const buttons = document.querySelectorAll(".sample-btn");
+  buttons.forEach((btn, i) => {
+    if (i === index) {
+      btn.classList.add("active");
+    } else {
+      btn.classList.remove("active");
+    }
+  });
+
   document.getElementById("age").value = sample.Age;
   document.getElementById("annualIncome").value = sample.AnnualIncome;
   document.getElementById("creditScore").value = sample.CreditScore;
@@ -304,16 +314,22 @@ function loadSample(index) {
   document.getElementById("previousDefaults").value = sample.PreviousLoanDefaults;
   document.getElementById("paymentHistory").value = sample.PaymentHistory;
 
-  // Scroll back to the form
-  document.getElementById("loanForm").scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
+  // On smaller screens, scroll back to the form
+  if (window.innerWidth <= 980) {
+    document.getElementById("loanForm").scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 }
 
 // Reset the form
 function resetForm() {
   document.getElementById("loanForm").reset();
+
+  const buttons = document.querySelectorAll(".sample-btn");
+  buttons.forEach((btn) => btn.classList.remove("active"));
+
   const resultBox = document.getElementById("result");
   resultBox.style.display = "none";
   resultBox.innerHTML = "";

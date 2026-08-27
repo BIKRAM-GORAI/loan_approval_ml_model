@@ -12,245 +12,321 @@
 
 <body>
 
-    <div class="container">
+    <div class="page-wrapper">
 
-        <div class="header-container">
-            <div class="header-text">
-                <h1>LoanIQ</h1>
-                <p>AI-Powered Loan Approval Prediction System</p>
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="nav-content">
+                <div class="brand-group">
+                    <h1>LoanIQ</h1>
+                    <span class="brand-badge">ML Model</span>
+                </div>
+                <p class="brand-tagline">AI-Powered Loan Approval & Risk Assessment System</p>
             </div>
             <button type="button" class="guide-btn" onclick="openGuideModal()">
-                📖 Field Guide & Instructions
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                Field Guide & Instructions
             </button>
+        </header>
+
+        <!-- Main Content Area: Form Card (Left) & Independent Sidebar Card (Right) -->
+        <div class="app-layout">
+
+            <!-- LEFT: Main Form Card -->
+            <main class="form-card">
+                <div class="card-header">
+                    <h2>Loan Application Form</h2>
+                    <p>Enter applicant demographic, financial, and credit parameters for evaluation.</p>
+                </div>
+
+                <form id="loanForm">
+
+                    <!-- Applicant Information -->
+                    <h3 class="form-section-title">Applicant Information</h3>
+
+                    <div class="form-group">
+                        <label for="age">Age (years)</label>
+                        <input
+                            type="number"
+                            id="age"
+                            placeholder="e.g. 35"
+                            min="18"
+                            max="100"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="annualIncome">Annual Income ($)</label>
+                        <input
+                            type="number"
+                            id="annualIncome"
+                            placeholder="e.g. 75000"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="creditScore">Credit Score (300 - 850)</label>
+                        <input
+                            type="number"
+                            id="creditScore"
+                            placeholder="e.g. 720"
+                            min="300"
+                            max="850"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employmentStatus">Employment Status</label>
+                        <select id="employmentStatus" required>
+                            <option value="">Select Employment Status</option>
+                            <option value="Employed">Employed</option>
+                            <option value="Self-Employed">Self-Employed</option>
+                            <option value="Unemployed">Unemployed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="educationLevel">Education Level</label>
+                        <select id="educationLevel" required>
+                            <option value="">Select Education Level</option>
+                            <option value="High School">High School</option>
+                            <option value="Associate">Associate</option>
+                            <option value="Bachelor">Bachelor</option>
+                            <option value="Master">Master</option>
+                            <option value="Doctorate">Doctorate</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Loan Information -->
+                    <h3 class="form-section-title">Loan Information</h3>
+
+                    <div class="form-group">
+                        <label for="loanAmount">Requested Loan Amount ($)</label>
+                        <input
+                            type="number"
+                            id="loanAmount"
+                            placeholder="e.g. 25000"
+                            min="500"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loanDuration">Loan Duration (months)</label>
+                        <input
+                            type="number"
+                            id="loanDuration"
+                            placeholder="e.g. 36"
+                            min="6"
+                            max="360"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="maritalStatus">Marital Status</label>
+                        <select id="maritalStatus" required>
+                            <option value="">Select Marital Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dependents">Number of Dependents</label>
+                        <input
+                            type="number"
+                            id="dependents"
+                            placeholder="e.g. 1"
+                            min="0"
+                            max="20"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="homeOwnership">Home Ownership Status</label>
+                        <select id="homeOwnership" required>
+                            <option value="">Select Home Ownership</option>
+                            <option value="Own">Own</option>
+                            <option value="Mortgage">Mortgage</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+
+                    <!-- Financial Information -->
+                    <h3 class="form-section-title">Financial & Credit History</h3>
+
+                    <div class="form-group">
+                        <label for="monthlyDebt">Monthly Debt Payments ($)</label>
+                        <input
+                            type="number"
+                            id="monthlyDebt"
+                            placeholder="e.g. 450"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dti">Debt-to-Income (DTI) Ratio</label>
+                        <input
+                            type="number"
+                            step="0.001"
+                            id="dti"
+                            placeholder="e.g. 0.25"
+                            min="0"
+                            max="1"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bankruptcy">Bankruptcy History</label>
+                        <select id="bankruptcy" required>
+                            <option value="">Any Past Bankruptcy?</option>
+                            <option value="0">No (0)</option>
+                            <option value="1">Yes (1)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="previousDefaults">Previous Loan Defaults</label>
+                        <select id="previousDefaults" required>
+                            <option value="">Any Previous Defaults?</option>
+                            <option value="0">No (0)</option>
+                            <option value="1">Yes (1)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="paymentHistory">Payment History Score</label>
+                        <input
+                            type="number"
+                            id="paymentHistory"
+                            placeholder="e.g. 28"
+                            min="0"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        Predict Loan Approval
+                    </button>
+
+                </form>
+
+                <!-- Prediction Result Card -->
+                <div id="result" class="result-card"></div>
+            </main>
+
+            <!-- RIGHT: Independent Sticky Sidebar Box for Sample Applicant Presets -->
+            <aside class="sidebar-card">
+                <div class="sidebar-header">
+                    <div class="sidebar-title-row">
+                        <h3>Sample Applicants</h3>
+                        <span class="preset-count">10 Presets</span>
+                    </div>
+                    <p>Click any profile to autofill the application parameters:</p>
+                </div>
+
+                <div class="sample-buttons">
+                    <button type="button" class="sample-btn" onclick="loadSample(0)">
+                        <span class="sample-badge strong">Approved</span>
+                        <div class="sample-info">
+                            <strong>Sample 1</strong>
+                            <span>Strong Profile ($95k, 760 FICO)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(1)">
+                        <span class="sample-badge strong">Approved</span>
+                        <div class="sample-info">
+                            <strong>Sample 2</strong>
+                            <span>High Income ($140k, 720 FICO)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(2)">
+                        <span class="sample-badge rejected">High Risk</span>
+                        <div class="sample-info">
+                            <strong>Sample 3</strong>
+                            <span>Low Credit (510 FICO, 1 Default)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(3)">
+                        <span class="sample-badge warning">Review</span>
+                        <div class="sample-info">
+                            <strong>Sample 4</strong>
+                            <span>High Debt ($1.8k/mo, 0.52 DTI)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(4)">
+                        <span class="sample-badge neutral">Moderate</span>
+                        <div class="sample-info">
+                            <strong>Sample 5</strong>
+                            <span>Young Applicant (Age 23, $10k Loan)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(5)">
+                        <span class="sample-badge strong">Approved</span>
+                        <div class="sample-info">
+                            <strong>Sample 6</strong>
+                            <span>Experienced (Age 58, $110k Income)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(6)">
+                        <span class="sample-badge rejected">High Risk</span>
+                        <div class="sample-info">
+                            <strong>Sample 7</strong>
+                            <span>Unemployed & Bankruptcy</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(7)">
+                        <span class="sample-badge neutral">Moderate</span>
+                        <div class="sample-info">
+                            <strong>Sample 8</strong>
+                            <span>Self-Employed ($60k, 650 FICO)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(8)">
+                        <span class="sample-badge strong">Approved</span>
+                        <div class="sample-info">
+                            <strong>Sample 9</strong>
+                            <span>Excellent Credit (800 FICO, $125k)</span>
+                        </div>
+                    </button>
+
+                    <button type="button" class="sample-btn" onclick="loadSample(9)">
+                        <span class="sample-badge warning">Review</span>
+                        <div class="sample-info">
+                            <strong>Sample 10</strong>
+                            <span>High Loan ($60k, 96 Months)</span>
+                        </div>
+                    </button>
+                </div>
+            </aside>
+
         </div>
-
-        <form id="loanForm">
-
-            <!-- Applicant Information -->
-            <h2>Applicant Information</h2>
-
-            <div class="form-group">
-                <label for="age">Age (years)</label>
-                <input
-                    type="number"
-                    id="age"
-                    placeholder="e.g. 35"
-                    min="18"
-                    max="100"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="annualIncome">Annual Income ($)</label>
-                <input
-                    type="number"
-                    id="annualIncome"
-                    placeholder="e.g. 75000"
-                    min="0"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="creditScore">Credit Score (300 - 850)</label>
-                <input
-                    type="number"
-                    id="creditScore"
-                    placeholder="e.g. 720"
-                    min="300"
-                    max="850"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="employmentStatus">Employment Status</label>
-                <select id="employmentStatus" required>
-                    <option value="">Select Employment Status</option>
-                    <option value="Employed">Employed</option>
-                    <option value="Self-Employed">Self-Employed</option>
-                    <option value="Unemployed">Unemployed</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="educationLevel">Education Level</label>
-                <select id="educationLevel" required>
-                    <option value="">Select Education Level</option>
-                    <option value="High School">High School</option>
-                    <option value="Associate">Associate</option>
-                    <option value="Bachelor">Bachelor</option>
-                    <option value="Master">Master</option>
-                    <option value="Doctorate">Doctorate</option>
-                </select>
-            </div>
-
-
-            <!-- Loan Information -->
-            <h2>Loan Information</h2>
-
-            <div class="form-group">
-                <label for="loanAmount">Requested Loan Amount ($)</label>
-                <input
-                    type="number"
-                    id="loanAmount"
-                    placeholder="e.g. 25000"
-                    min="500"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="loanDuration">Loan Duration (months)</label>
-                <input
-                    type="number"
-                    id="loanDuration"
-                    placeholder="e.g. 36"
-                    min="6"
-                    max="360"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="maritalStatus">Marital Status</label>
-                <select id="maritalStatus" required>
-                    <option value="">Select Marital Status</option>
-                    <option value="Single">Single</option>
-                    <option value="Married">Married</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="dependents">Number of Dependents</label>
-                <input
-                    type="number"
-                    id="dependents"
-                    placeholder="e.g. 1"
-                    min="0"
-                    max="20"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="homeOwnership">Home Ownership Status</label>
-                <select id="homeOwnership" required>
-                    <option value="">Select Home Ownership</option>
-                    <option value="Own">Own</option>
-                    <option value="Mortgage">Mortgage</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-
-            <!-- Financial Information -->
-            <h2>Financial Information</h2>
-
-            <div class="form-group">
-                <label for="monthlyDebt">Monthly Debt Payments ($)</label>
-                <input
-                    type="number"
-                    id="monthlyDebt"
-                    placeholder="e.g. 450"
-                    min="0"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="dti">Debt-to-Income (DTI) Ratio</label>
-                <input
-                    type="number"
-                    step="0.001"
-                    id="dti"
-                    placeholder="e.g. 0.25"
-                    min="0"
-                    max="1"
-                    required
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="bankruptcy">Bankruptcy History</label>
-                <select id="bankruptcy" required>
-                    <option value="">Any Past Bankruptcy?</option>
-                    <option value="0">No (0)</option>
-                    <option value="1">Yes (1)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="previousDefaults">Previous Loan Defaults</label>
-                <select id="previousDefaults" required>
-                    <option value="">Any Previous Defaults?</option>
-                    <option value="0">No (0)</option>
-                    <option value="1">Yes (1)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="paymentHistory">Payment History Score</label>
-                <input
-                    type="number"
-                    id="paymentHistory"
-                    placeholder="e.g. 28"
-                    min="0"
-                    required
-                >
-            </div>
-
-            <button type="submit">
-                Predict Loan Approval
-            </button>
-
-        </form>
-
-        <!-- Sample Applicant Data -->
-        <section class="sample-section">
-            <h2>Try Sample Applicants</h2>
-            <p>Select a pre-configured applicant profile to test predictions instantly.</p>
-
-            <div class="sample-buttons">
-                <button type="button" class="sample-btn" onclick="loadSample(0)">
-                    Sample 1 - Strong Applicant
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(1)">
-                    Sample 2 - High Income
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(2)">
-                    Sample 3 - Low Credit
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(3)">
-                    Sample 4 - High Debt
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(4)">
-                    Sample 5 - Young Applicant
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(5)">
-                    Sample 6 - Experienced
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(6)">
-                    Sample 7 - Risky Applicant
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(7)">
-                    Sample 8 - Moderate Applicant
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(8)">
-                    Sample 9 - Excellent Credit
-                </button>
-                <button type="button" class="sample-btn" onclick="loadSample(9)">
-                    Sample 10 - High Loan
-                </button>
-            </div>
-        </section>
-
-        <!-- Prediction Result Card -->
-        <div id="result" class="result-card"></div>
 
     </div>
 
@@ -258,19 +334,19 @@
     <div id="guideModal" class="modal-overlay" onclick="handleModalOverlayClick(event)">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>📖 Field Guide & Instructions</h2>
+                <h2>Field Guide & Feature Descriptions</h2>
                 <button type="button" class="modal-close-btn" onclick="closeGuideModal()" aria-label="Close modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="guide-intro">
-                    <h3>💡 How It Works</h3>
-                    <p>Enter applicant details in the form or pick any pre-configured <strong>Sample Applicant</strong>, then click <strong>Predict Loan Approval</strong>. The Machine Learning pipeline will preprocess the features, apply scaling, and evaluate the application to return an approval decision with its probability score.</p>
+                    <h3>How It Works</h3>
+                    <p>Enter applicant details in the form or pick any pre-configured <strong>Sample Applicant</strong> from the right sidebar, then click <strong>Predict Loan Approval</strong>. The Machine Learning pipeline will preprocess the features, apply scaling, and evaluate the application to return an approval decision with its probability score.</p>
                 </div>
 
-                <h3>📋 Feature & Label Descriptions</h3>
+                <h3 class="guide-section-heading">Feature & Label Descriptions</h3>
                 <div class="field-guide-grid">
                     <div class="guide-card">
-                        <h4>👤 Applicant Information</h4>
+                        <h4>Applicant Information</h4>
                         <ul>
                             <li><strong>Age:</strong> Age in years (18–100). Reflects financial maturity and career stage.</li>
                             <li><strong>Annual Income ($):</strong> Total gross annual income. Higher earnings indicate higher repayment capacity.</li>
@@ -281,7 +357,7 @@
                     </div>
 
                     <div class="guide-card">
-                        <h4>💰 Loan Information</h4>
+                        <h4>Loan Information</h4>
                         <ul>
                             <li><strong>Requested Loan Amount ($):</strong> Total principal amount requested. Larger amounts relative to income carry higher risk.</li>
                             <li><strong>Loan Duration (months):</strong> Loan repayment term (e.g. 12, 36, 60 months).</li>
@@ -292,7 +368,7 @@
                     </div>
 
                     <div class="guide-card">
-                        <h4>📊 Financial & Credit History</h4>
+                        <h4>Financial & Credit History</h4>
                         <ul>
                             <li><strong>Monthly Debt Payments ($):</strong> Total ongoing recurring monthly payments (credit cards, existing loans, auto payments).</li>
                             <li><strong>Debt-to-Income (DTI) Ratio:</strong> Monthly debt divided by gross monthly income (e.g. 0.20 = 20%). Ratios under 0.36 are considered healthy.</li>

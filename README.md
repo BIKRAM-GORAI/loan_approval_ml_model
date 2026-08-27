@@ -523,34 +523,35 @@ The probability shown is the model's estimated probability of the `Approved` cla
 ```text
 LoanIQ/
 │
+├── api/
+│   └── index.py             # Vercel serverless function entrypoint
+│
 ├── app/
-│   │
-│   ├── app.py
+│   ├── app.py               # Flask backend & frontend routes
 │   │
 │   ├── templates/
-│   │   └── index.html
+│   │   └── index.html       # Web UI
 │   │
 │   └── static/
-│       ├── style.css
-│       └── script.js
+│       ├── style.css        # Responsive CSS styling
+│       └── script.js        # API interaction & sample data handler
 │
 ├── models/
 │   ├── loan_approval_model.pkl
 │   ├── loan_approval_preprocessor.pkl
-│   ├── loan_approval_scaler.pkl
-│   └── loan_approval_features.pkl
+│   └── loan_approval_scaler.pkl
 │
 ├── notebooks/
-│   └── LoanIQ.ipynb
+│   └── LoanIQ.ipynb         # Machine learning development notebook
 │
 ├── data/
-│   └── loan_dataset.csv
+│   └── loan_dataset.csv     # Loan approval dataset
 │
-├── requirements.txt
-│
-├── README.md
-│
-└── .gitignore
+├── run.py                   # One-click local development launcher
+├── vercel.json              # Vercel serverless deployment config
+├── requirements.txt         # Python dependencies
+├── README.md                # Project documentation
+└── .gitignore               # Git ignored files & environments
 ```
 
 ---
@@ -559,15 +560,16 @@ LoanIQ/
 
 | File/Directory | Purpose |
 |---|---|
+| `api/index.py` | Vercel Serverless Function entrypoint |
+| `run.py` | One-click local development runner |
+| `vercel.json` | Vercel build & route rewrite configuration |
 | `app/` | Flask backend and frontend application |
-| `app/app.py` | Main Flask application |
-| `app/templates/` | HTML/Jinja templates |
-| `app/templates/index.html` | LoanIQ frontend |
-| `app/static/` | Frontend CSS and JavaScript |
+| `app/app.py` | Main Flask application (serves UI & handles `/predict`) |
+| `app/templates/index.html` | LoanIQ frontend web interface |
 | `app/static/style.css` | Frontend styling |
-| `app/static/script.js` | Form submission and API communication |
-| `models/` | Saved machine learning components |
-| `notebooks/` | Machine learning development |
+| `app/static/script.js` | Form submission, prediction display & sample loader |
+| `models/` | Saved machine learning models & preprocessors (.pkl) |
+| `notebooks/` | Machine learning exploration and training |
 | `data/` | Dataset |
 | `requirements.txt` | Python dependencies |
 | `README.md` | Project documentation |
@@ -681,111 +683,93 @@ joblib
 
 ---
 
-# ▶️ 4. Run the Flask Backend
+# ▶️ 4. Run the Application Locally
 
 Make sure you are in the project root directory:
 
-```text
-LoanIQ/
-```
-
-Run:
-
 ```powershell
-python app/app.py
+python run.py
 ```
+*(Alternatively, you can run `python app/app.py`)*
 
-The Flask server will start at:
+The server will start at:
 
 ```text
 http://127.0.0.1:5000
 ```
 
-You should see messages similar to:
+You should see messages confirming models loaded:
 
 ```text
-Model loaded successfully.
-Preprocessor loaded successfully.
-Scaler loaded successfully.
+Models successfully loaded from: .../models
 ```
 
 ---
 
 # 🌐 5. Open the LoanIQ Frontend
 
-Once Flask is running, open the following URL in your browser:
+Simply open your browser and navigate directly to:
 
 ```text
-http://127.0.0.1:5000/app
+http://127.0.0.1:5000
 ```
 
-This opens the complete LoanIQ frontend.
-
-> Do not open `index.html` directly from File Explorer because the frontend uses Flask/Jinja functionality such as `url_for()`.
+The web application, interactive loan assessment form, and sample applicant presets will load directly at the root URL.
 
 ---
 
-# 🔍 6. Test the Backend
+# 🔍 6. Health & Status Checks
 
-You can verify that the backend is running by opening:
+You can verify that the backend and model artifacts are healthy by visiting:
 
 ```text
-http://127.0.0.1:5000/
+http://127.0.0.1:5000/health
 ```
 
 Expected response:
 
 ```json
 {
-    "message": "LoanIQ API is running.",
-    "status": "success"
+    "status": "healthy",
+    "model_loaded": true,
+    "preprocessor_loaded": true,
+    "scaler_loaded": true
 }
-```
-
-You can also check the model status:
-
-```text
-http://127.0.0.1:5000/health
 ```
 
 ---
 
-# 🛑 Stop the Backend
+# 🚀 7. Deploy to Vercel
 
-To stop the Flask development server:
+LoanIQ is pre-configured for free serverless hosting on **[Vercel](https://vercel.com)**:
+
+### Steps:
+1. **Push your code to GitHub**:
+   ```bash
+   git add .
+   git commit -m "Deploy LoanIQ to Vercel"
+   git push origin main
+   ```
+
+2. **Import to Vercel**:
+   - Log in to your [Vercel Dashboard](https://vercel.com/dashboard).
+   - Click **"Add New"** → **"Project"**.
+   - Select your `loan_approval_ml_model` GitHub repository.
+   - Leave the default build settings (Vercel automatically detects `vercel.json` and `api/index.py`).
+   - Click **"Deploy"**.
+
+3. **Live URL**:
+   - Once deployment completes, your app will be accessible live at `https://your-project.vercel.app/`!
+
+---
+
+# 🛑 Stop the Local Server
+
+To stop the local Flask server at any time:
 
 ```text
 Ctrl + C
 ```
-
----
-
-# 🔄 Running LoanIQ Again
-
-Every time you want to run the project:
-
-### Step 1 — Navigate to the project
-
-```powershell
-cd LoanIQ
-```
-
-### Step 2 — Activate virtual environment
-
-```powershell
-venv\Scripts\activate
-```
-
-### Step 3 — Run Flask
-
-```powershell
-python app/app.py
-```
-
-### Step 4 — Open the frontend
-
-```text
-http://127.0.0.1:5000/app
 ```
 
 ---

@@ -1,170 +1,116 @@
-// Connect Loan Prediction Form to Flask API
+// LoanIQ Frontend Script
 
 const form = document.getElementById("loanForm");
+const resultBox = document.getElementById("result");
+const submitBtn = form.querySelector('button[type="submit"]');
 
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
 
-  // Collect data from the form
+  // Collect and parse form data
   const formData = {
     Age: Number(document.getElementById("age").value),
-
     AnnualIncome: Number(document.getElementById("annualIncome").value),
-
     CreditScore: Number(document.getElementById("creditScore").value),
-
     EmploymentStatus: document.getElementById("employmentStatus").value,
-
     EducationLevel: document.getElementById("educationLevel").value,
-
     LoanAmount: Number(document.getElementById("loanAmount").value),
-
     LoanDuration: Number(document.getElementById("loanDuration").value),
-
     MaritalStatus: document.getElementById("maritalStatus").value,
-
     NumberOfDependents: Number(document.getElementById("dependents").value),
-
     HomeOwnershipStatus: document.getElementById("homeOwnership").value,
-
     MonthlyDebtPayments: Number(document.getElementById("monthlyDebt").value),
-
     DebtToIncomeRatio: Number(document.getElementById("dti").value),
-
     BankruptcyHistory: Number(document.getElementById("bankruptcy").value),
-
-    PreviousLoanDefaults: Number(
-      document.getElementById("previousDefaults").value,
-    ),
-
+    PreviousLoanDefaults: Number(document.getElementById("previousDefaults").value),
     PaymentHistory: Number(document.getElementById("paymentHistory").value),
   };
 
+  const originalBtnText = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Analyzing Application...";
+
   try {
-    // Send applicant data to Flask
+    // Send applicant data to API
     const response = await fetch("/predict", {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
       },
-
       body: JSON.stringify(formData),
     });
 
     const result = await response.json();
 
-    // Handle API errors
     if (!response.ok) {
-      throw new Error(result.error || "Prediction failed");
+      throw new Error(result.error || "Prediction failed. Please try again.");
     }
 
-    // Get result container
-    const resultBox = document.getElementById("result");
-
     resultBox.style.display = "block";
 
-    // Display prediction
-    // Prediction Result
+    const probabilityPct = result.approval_probability !== undefined 
+      ? (result.approval_probability * 100).toFixed(1) 
+      : null;
 
-if (result.prediction === 1) {
-
-    resultBox.innerHTML = `
+    if (result.prediction === 1) {
+      resultBox.className = "result-card approved";
+      resultBox.innerHTML = `
         <div class="result-icon">✓</div>
-
         <h2>Loan Approved</h2>
-
-        <p>
-            Approval Probability:
-            <strong>
-                ${(result.approval_probability * 100).toFixed(2)}%
-            </strong>
-        </p>
-
-        <div class="probability-container">
-            <div
-                class="probability-bar"
-                style="width: ${result.approval_probability * 100}%"
-            ></div>
-        </div>
-
-        <p>
-            The applicant meets the model's approval criteria.
-        </p>
-
-        <button
-            type="button"
-            onclick="resetForm()"
-        >
-            Try Another Application
+        ${probabilityPct ? `
+          <p>Approval Probability: <strong>${probabilityPct}%</strong></p>
+          <div class="probability-container">
+            <div class="probability-bar">
+              <div id="probabilityFill" style="width: ${probabilityPct}%"></div>
+            </div>
+          </div>
+        ` : ''}
+        <p>The applicant meets the model's approval criteria.</p>
+        <button type="button" id="resetButton" onclick="resetForm()">
+          Try Another Application
         </button>
-    `;
-
-    resultBox.className = "result-card approved";
-
-} else {
-
-    resultBox.innerHTML = `
+      `;
+    } else {
+      resultBox.className = "result-card rejected";
+      resultBox.innerHTML = `
         <div class="result-icon">✕</div>
-
         <h2>Loan Rejected</h2>
-
-        <p>
-            Approval Probability:
-            <strong>
-                ${(result.approval_probability * 100).toFixed(2)}%
-            </strong>
-        </p>
-
-        <div class="probability-container">
-            <div
-                class="probability-bar"
-                style="width: ${result.approval_probability * 100}%"
-            ></div>
-        </div>
-
-        <p>
-            The applicant does not meet the model's approval criteria.
-        </p>
-
-        <button
-            type="button"
-            onclick="resetForm()"
-        >
-            Try Another Application
+        ${probabilityPct ? `
+          <p>Approval Probability: <strong>${probabilityPct}%</strong></p>
+          <div class="probability-container">
+            <div class="probability-bar">
+              <div id="probabilityFill" style="width: ${probabilityPct}%"></div>
+            </div>
+          </div>
+        ` : ''}
+        <p>The applicant does not meet the model's approval criteria.</p>
+        <button type="button" id="resetButton" onclick="resetForm()">
+          Try Another Application
         </button>
-    `;
+      `;
+    }
 
-    resultBox.className = "result-card rejected";
-}
+    resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
 
-
-} catch (error) {
-
+  } catch (error) {
     console.error("Prediction Error:", error);
-
-    const resultBox = document.getElementById("result");
-
     resultBox.style.display = "block";
-
     resultBox.className = "result-card rejected";
-
     resultBox.innerHTML = `
-        <div class="result-icon">!</div>
-
-        <h2>Prediction Error</h2>
-
-        <p>
-            ${error.message}
-        </p>
+      <div class="result-icon">!</div>
+      <h2>Prediction Error</h2>
+      <p>${error.message}</p>
+      <button type="button" id="resetButton" onclick="resetForm()">Try Again</button>
     `;
-}
+    resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = originalBtnText;
+  }
 });
 
 // Sample Applicant Data
-
 const sampleApplicants = [
-  // Sample 1 - Strong Applicant
   {
     Age: 35,
     AnnualIncome: 95000,
@@ -182,8 +128,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 29,
   },
-
-  // Sample 2 - High Income
   {
     Age: 42,
     AnnualIncome: 140000,
@@ -201,8 +145,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 27,
   },
-
-  // Sample 3 - Low Credit
   {
     Age: 39,
     AnnualIncome: 45000,
@@ -220,8 +162,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 1,
     PaymentHistory: 18,
   },
-
-  // Sample 4 - High Debt
   {
     Age: 48,
     AnnualIncome: 65000,
@@ -239,8 +179,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 20,
   },
-
-  // Sample 5 - Young Applicant
   {
     Age: 23,
     AnnualIncome: 42000,
@@ -258,8 +196,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 22,
   },
-
-  // Sample 6 - Experienced Applicant
   {
     Age: 58,
     AnnualIncome: 110000,
@@ -277,8 +213,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 30,
   },
-
-  // Sample 7 - Risky Applicant
   {
     Age: 51,
     AnnualIncome: 38000,
@@ -296,8 +230,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 1,
     PaymentHistory: 12,
   },
-
-  // Sample 8 - Moderate Applicant
   {
     Age: 31,
     AnnualIncome: 60000,
@@ -315,8 +247,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 24,
   },
-
-  // Sample 9 - Excellent Credit
   {
     Age: 45,
     AnnualIncome: 125000,
@@ -334,8 +264,6 @@ const sampleApplicants = [
     PreviousLoanDefaults: 0,
     PaymentHistory: 30,
   },
-
-  // Sample 10 - High Loan
   {
     Age: 40,
     AnnualIncome: 70000,
@@ -356,39 +284,24 @@ const sampleApplicants = [
 ];
 
 // Load selected sample into the form
-
 function loadSample(index) {
   const sample = sampleApplicants[index];
+  if (!sample) return;
 
   document.getElementById("age").value = sample.Age;
-
   document.getElementById("annualIncome").value = sample.AnnualIncome;
-
   document.getElementById("creditScore").value = sample.CreditScore;
-
   document.getElementById("employmentStatus").value = sample.EmploymentStatus;
-
   document.getElementById("educationLevel").value = sample.EducationLevel;
-
   document.getElementById("loanAmount").value = sample.LoanAmount;
-
   document.getElementById("loanDuration").value = sample.LoanDuration;
-
   document.getElementById("maritalStatus").value = sample.MaritalStatus;
-
   document.getElementById("dependents").value = sample.NumberOfDependents;
-
   document.getElementById("homeOwnership").value = sample.HomeOwnershipStatus;
-
   document.getElementById("monthlyDebt").value = sample.MonthlyDebtPayments;
-
   document.getElementById("dti").value = sample.DebtToIncomeRatio;
-
   document.getElementById("bankruptcy").value = sample.BankruptcyHistory;
-
-  document.getElementById("previousDefaults").value =
-    sample.PreviousLoanDefaults;
-
+  document.getElementById("previousDefaults").value = sample.PreviousLoanDefaults;
   document.getElementById("paymentHistory").value = sample.PaymentHistory;
 
   // Scroll back to the form
@@ -396,24 +309,18 @@ function loadSample(index) {
     behavior: "smooth",
     block: "start",
   });
-  // Reset the form
+}
 
+// Reset the form
 function resetForm() {
+  document.getElementById("loanForm").reset();
+  const resultBox = document.getElementById("result");
+  resultBox.style.display = "none";
+  resultBox.innerHTML = "";
+  resultBox.className = "result-card";
 
-    document.getElementById("loanForm").reset();
-
-    const resultBox = document.getElementById("result");
-
-    resultBox.style.display = "none";
-
-    resultBox.innerHTML = "";
-
-    resultBox.className = "result-card";
-
-    document.getElementById("loanForm").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+  document.getElementById("loanForm").scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 }
-}
-    

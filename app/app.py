@@ -1,82 +1,90 @@
 # LoanIQ Flask Backend
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_from_directory
 import os
 import joblib
+import pandas as pd
 
+# --------------------------------------------------
+# Path Setup
+# --------------------------------------------------
+# Get project root directory
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+TEMPLATE_DIR = os.path.join(BASE_DIR, "app", "templates")
+STATIC_DIR = os.path.join(BASE_DIR, "app", "static")
 
 # --------------------------------------------------
 # Initialize Flask Application
 # --------------------------------------------------
-
-app = Flask(__name__)
-
+app = Flask(
+    __name__,
+    template_folder=TEMPLATE_DIR,
+    static_folder=STATIC_DIR,
+    static_url_path="/static"
+)
 
 # --------------------------------------------------
 # Load Saved Machine Learning Components
 # --------------------------------------------------
+model = None
+preprocessor = None
+scaler = None
 
-# Get the project root directory
-# app.py is inside: loaniq/app/
-# Therefore, going one level up gives: loaniq/
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+def load_ml_components():
+    global model, preprocessor, scaler
+    if model is not None and preprocessor is not None and scaler is not None:
+        return
 
+    possible_model_dirs = [
+        os.path.join(BASE_DIR, "models"),
+        os.path.join(os.getcwd(), "models"),
+        os.path.join(os.path.dirname(__file__), "..", "models"),
+        "models"
+    ]
 
-# Paths to saved model files
-MODEL_PATH = os.path.join(
-    BASE_DIR,
-    "models",
-    "loan_approval_model.pkl"
-)
+    for model_dir in possible_model_dirs:
+        model_path = os.path.join(model_dir, "loan_approval_model.pkl")
+        preprocessor_path = os.path.join(model_dir, "loan_approval_preprocessor.pkl")
+        scaler_path = os.path.join(model_dir, "loan_approval_scaler.pkl")
 
-PREPROCESSOR_PATH = os.path.join(
-    BASE_DIR,
-    "models",
-    "loan_approval_preprocessor.pkl"
-)
+        if os.path.exists(model_path) and os.path.exists(preprocessor_path) and os.path.exists(scaler_path):
+            try:
+                model = joblib.load(model_path)
+                preprocessor = joblib.load(preprocessor_path)
+                scaler = joblib.load(scaler_path)
+                print(f"Models successfully loaded from: {model_dir}")
+                return
+            except Exception as e:
+                print(f"Error loading models from {model_dir}: {e}")
 
-SCALER_PATH = os.path.join(
-    BASE_DIR,
-    "models",
-    "loan_approval_scaler.pkl"
-)
+    print("Warning: ML model files could not be loaded immediately.")
 
-
-# Load model
-model = joblib.load(MODEL_PATH)
-
-# Load preprocessing pipeline
-preprocessor = joblib.load(PREPROCESSOR_PATH)
-
-# Load scaler
-scaler = joblib.load(SCALER_PATH)
-
-
-print("Model loaded successfully.")
-print("Preprocessor loaded successfully.")
-print("Scaler loaded successfully.")
+# Load models on initialization
+load_ml_components()
 
 
 # --------------------------------------------------
-# Home Route
+# Frontend Routes
 # --------------------------------------------------
-
 @app.route("/", methods=["GET"])
 def home():
+    """Serve the main LoanIQ web application directly at the root URL."""
+    return render_template("index.html")
 
-    return jsonify({
-        "message": "LoanIQ API is running.",
-        "status": "success"
-    })
+@app.route("/app", methods=["GET"])
+def frontend():
+    """Alias route for frontend."""
+    return render_template("index.html")
 
 
 # --------------------------------------------------
 # Health Check Route
 # --------------------------------------------------
-
 @app.route("/health", methods=["GET"])
+@app.route("/api/health", methods=["GET"])
 def health():
-
+    load_ml_components()
     return jsonify({
         "status": "healthy",
         "model_loaded": model is not None,
@@ -88,31 +96,28 @@ def health():
 # --------------------------------------------------
 # Prediction Route
 # --------------------------------------------------
-
-# --------------------------------------------------
-# Prediction Route
-# --------------------------------------------------
-
 @app.route("/predict", methods=["POST"])
+@app.route("/api/predict", methods=["POST"])
 def predict():
-
     try:
+        load_ml_components()
+
+        if model is None or preprocessor is None or scaler is None:
+            return jsonify({
+                "error": "Machine learning model artifacts are not loaded properly."
+            }), 500
 
         # Get JSON data from request
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
         if not data:
             return jsonify({
                 "error": "No input data provided."
             }), 400
 
-
         # --------------------------------------------------
-        # Create input data
+        # Create input DataFrame
         # --------------------------------------------------
-
-        import pandas as pd
-
         input_data = pd.DataFrame([{
             "Age": data["Age"],
             "AnnualIncome": data["AnnualIncome"],
@@ -131,94 +136,64 @@ def predict():
             "PaymentHistory": data["PaymentHistory"]
         }])
 
-
         # --------------------------------------------------
         # Preprocess input
         # --------------------------------------------------
-
         processed_data = preprocessor.transform(input_data)
-
 
         # --------------------------------------------------
         # Scale processed input
         # --------------------------------------------------
-
         scaled_data = scaler.transform(processed_data)
-
 
         # --------------------------------------------------
         # Make prediction
         # --------------------------------------------------
-
         prediction = model.predict(scaled_data)[0]
-
 
         # --------------------------------------------------
         # Get prediction probability
         # --------------------------------------------------
-
         probability = None
-
         if hasattr(model, "predict_proba"):
-
             probability = model.predict_proba(scaled_data)[0][1]
-
 
         # --------------------------------------------------
         # Convert prediction to readable result
         # --------------------------------------------------
-
         if prediction == 1:
             result = "Approved"
         else:
             result = "Rejected"
 
-
         # --------------------------------------------------
         # Return response
         # --------------------------------------------------
-
         response = {
             "prediction": int(prediction),
             "result": result
         }
 
         if probability is not None:
-
-            response["approval_probability"] = round(
-                float(probability),
-                4
-            )
-
+            response["approval_probability"] = round(float(probability), 4)
 
         return jsonify(response)
 
-
     except KeyError as e:
-
         return jsonify({
             "error": f"Missing required field: {str(e)}"
         }), 400
 
-
     except Exception as e:
-
         return jsonify({
             "error": str(e)
         }), 500
 
-# Serve LoanIQ Frontend
-
-@app.route("/app")
-def frontend():
-    return render_template("index.html")
 
 # --------------------------------------------------
-# Run Flask Application
+# Run Flask Application Locally
 # --------------------------------------------------
-
 if __name__ == "__main__":
-
     app.run(
         host="127.0.0.1",
         port=5000,

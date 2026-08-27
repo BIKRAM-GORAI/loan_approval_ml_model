@@ -39,8 +39,17 @@
             <!-- LEFT: Main Form Card -->
             <main class="form-card">
                 <div class="card-header">
-                    <h2>Loan Application Form</h2>
-                    <p>Enter applicant demographic, financial, and credit parameters for evaluation.</p>
+                    <div class="card-header-text">
+                        <h2>Loan Application Form</h2>
+                        <p>Enter applicant demographic, financial, and credit parameters for evaluation.</p>
+                    </div>
+                    <button type="button" class="reset-form-top-btn" onclick="resetForm()" title="Clear and reset all form fields">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                            <path d="M3 3v5h5"></path>
+                        </svg>
+                        Reset Form
+                    </button>
                 </div>
 
                 <form id="loanForm">

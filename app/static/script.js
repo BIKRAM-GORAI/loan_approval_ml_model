@@ -324,3 +324,35 @@ function resetForm() {
     block: "start",
   });
 }
+
+// --------------------------------------------------
+// Field Guide Modal Controls
+// --------------------------------------------------
+function openGuideModal() {
+  const modal = document.getElementById("guideModal");
+  if (modal) {
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeGuideModal() {
+  const modal = document.getElementById("guideModal");
+  if (modal) {
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function handleModalOverlayClick(event) {
+  if (event.target && event.target.id === "guideModal") {
+    closeGuideModal();
+  }
+}
+
+// Close modal on Escape key press
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeGuideModal();
+  }
+});

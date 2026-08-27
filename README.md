@@ -2,9 +2,13 @@
 
 ## AI-Powered Loan Approval Prediction System
 
+[![Live Demo on Vercel](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://loan-approval-ml-model.vercel.app/)
+
+> 🌐 **Live Web Application:** [https://loan-approval-ml-model.vercel.app/](https://loan-approval-ml-model.vercel.app/)
+
 LoanIQ is a machine learning-powered web application that predicts whether a loan application is likely to be **Approved** or **Rejected** based on an applicant's financial, demographic, employment, and credit-related information.
 
-The project combines a **machine learning pipeline**, **Flask REST API**, and **web-based frontend** to create an end-to-end loan prediction system.
+The project combines a **machine learning pipeline**, **Flask REST API**, and **interactive web frontend** to create an end-to-end loan prediction system.
 
 ---
 

@@ -14,8 +14,15 @@
 
     <div class="container">
 
-        <h1>LoanIQ</h1>
-        <p>AI-Powered Loan Approval Prediction System</p>
+        <div class="header-container">
+            <div class="header-text">
+                <h1>LoanIQ</h1>
+                <p>AI-Powered Loan Approval Prediction System</p>
+            </div>
+            <button type="button" class="guide-btn" onclick="openGuideModal()">
+                📖 Field Guide & Instructions
+            </button>
+        </div>
 
         <form id="loanForm">
 
@@ -245,6 +252,61 @@
         <!-- Prediction Result Card -->
         <div id="result" class="result-card"></div>
 
+    </div>
+
+    <!-- Field Guide & Instructions Modal -->
+    <div id="guideModal" class="modal-overlay" onclick="handleModalOverlayClick(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📖 Field Guide & Instructions</h2>
+                <button type="button" class="modal-close-btn" onclick="closeGuideModal()" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="guide-intro">
+                    <h3>💡 How It Works</h3>
+                    <p>Enter applicant details in the form or pick any pre-configured <strong>Sample Applicant</strong>, then click <strong>Predict Loan Approval</strong>. The Machine Learning pipeline will preprocess the features, apply scaling, and evaluate the application to return an approval decision with its probability score.</p>
+                </div>
+
+                <h3>📋 Feature & Label Descriptions</h3>
+                <div class="field-guide-grid">
+                    <div class="guide-card">
+                        <h4>👤 Applicant Information</h4>
+                        <ul>
+                            <li><strong>Age:</strong> Age in years (18–100). Reflects financial maturity and career stage.</li>
+                            <li><strong>Annual Income ($):</strong> Total gross annual income. Higher earnings indicate higher repayment capacity.</li>
+                            <li><strong>Credit Score:</strong> FICO score (300–850). Scores above 700 signify strong credit reliability.</li>
+                            <li><strong>Employment Status:</strong> Current status (<em>Employed</em>, <em>Self-Employed</em>, <em>Unemployed</em>). Stable employment strongly supports approval.</li>
+                            <li><strong>Education Level:</strong> Highest completed level of education (<em>High School</em> to <em>Doctorate</em>).</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-card">
+                        <h4>💰 Loan Information</h4>
+                        <ul>
+                            <li><strong>Requested Loan Amount ($):</strong> Total principal amount requested. Larger amounts relative to income carry higher risk.</li>
+                            <li><strong>Loan Duration (months):</strong> Loan repayment term (e.g. 12, 36, 60 months).</li>
+                            <li><strong>Marital Status:</strong> Legal marital status (<em>Single</em>, <em>Married</em>, <em>Divorced</em>, <em>Widowed</em>).</li>
+                            <li><strong>Number of Dependents:</strong> Count of individuals financially supported by the applicant.</li>
+                            <li><strong>Home Ownership:</strong> Current housing situation (<em>Own</em>, <em>Mortgage</em>, <em>Rent</em>, <em>Other</em>).</li>
+                        </ul>
+                    </div>
+
+                    <div class="guide-card">
+                        <h4>📊 Financial & Credit History</h4>
+                        <ul>
+                            <li><strong>Monthly Debt Payments ($):</strong> Total ongoing recurring monthly payments (credit cards, existing loans, auto payments).</li>
+                            <li><strong>Debt-to-Income (DTI) Ratio:</strong> Monthly debt divided by gross monthly income (e.g. 0.20 = 20%). Ratios under 0.36 are considered healthy.</li>
+                            <li><strong>Bankruptcy History:</strong> Whether the applicant has ever filed for bankruptcy (<em>0 = No</em>, <em>1 = Yes</em>).</li>
+                            <li><strong>Previous Loan Defaults:</strong> Whether the applicant ever failed to repay a loan previously (<em>0 = No</em>, <em>1 = Yes</em>).</li>
+                            <li><strong>Payment History Score:</strong> Track record score of on-time payments (0–30+). Higher scores mean reliable repayment history.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-action-btn" onclick="closeGuideModal()">Close Guide</button>
+            </div>
+        </div>
     </div>
 
     <script src="/static/script.js"></script>

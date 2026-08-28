@@ -1,401 +1,2138 @@
-<!-- LoanIQ Frontend -->
-
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LoanIQ - AI-Powered Loan Approval Prediction</title>
-    <link rel="stylesheet" href="/static/style.css">
+
+
+<title>LoanIQ | Loan Risk Assessment</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+
 </head>
 
 <body>
 
-    <div class="page-wrapper">
+<div class="app-shell">
 
-        <!-- Top Navigation Bar -->
-        <header class="top-nav">
-            <div class="nav-content">
-                <div class="brand-group">
-                    <h1>LoanIQ</h1>
-                    <span class="brand-badge">ML Model</span>
-                </div>
-                <p class="brand-tagline">AI-Powered Loan Approval & Risk Assessment System</p>
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-mark">
+            L
+        </div>
+
+        <div>
+            <h1>LoanIQ</h1>
+            <span>Risk Assessment</span>
+        </div>
+
+    </div>
+
+
+    <nav class="main-nav" aria-label="Main navigation">
+
+        <button
+            class="nav-item active"
+            data-page="dashboard"
+            type="button"
+        >
+            <span class="nav-icon">⌂</span>
+            <span>Dashboard</span>
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="assessment"
+            type="button"
+        >
+            <span class="nav-icon">＋</span>
+            <span>New Assessment</span>
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="samples"
+            type="button"
+        >
+            <span class="nav-icon">▦</span>
+            <span>Sample Cases</span>
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="model"
+            type="button"
+        >
+            <span class="nav-icon">◈</span>
+            <span>Model</span>
+        </button>
+
+
+        <button
+            class="nav-item"
+            data-page="about"
+            type="button"
+        >
+            <span class="nav-icon">ⓘ</span>
+            <span>About</span>
+        </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+                <strong>System Online</strong>
+                <small>ML pipeline ready</small>
             </div>
-            <button type="button" class="guide-btn" onclick="openGuideModal()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                Field Guide & Instructions
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+
+<main class="main-content">
+
+
+    <!-- =================================================
+         DASHBOARD
+         ================================================= -->
+
+    <section
+        class="page active"
+        id="dashboardPage"
+    >
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    LOANIQ WORKSPACE
+                </p>
+
+                <h2>
+                    Loan assessment dashboard
+                </h2>
+
+                <p class="page-description">
+                    Evaluate an applicant's loan approval
+                    probability using the trained LoanIQ model.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-btn"
+                id="dashboardNewAssessment"
+                type="button"
+            >
+                <span>＋</span>
+                New Assessment
             </button>
+
         </header>
 
-        <!-- Main Content Area: Form Card (Left) & Independent Sidebar Card (Right) -->
-        <div class="app-layout">
 
-            <!-- LEFT: Main Form Card -->
-            <main class="form-card">
-                <div class="card-header">
-                    <div class="card-header-text">
-                        <h2>Loan Application Form</h2>
-                        <p>Enter applicant demographic, financial, and credit parameters for evaluation.</p>
+
+        <div class="hero-card">
+
+            <div class="hero-content">
+
+                <span class="hero-label">
+                    AI-POWERED RISK ASSESSMENT
+                </span>
+
+                <h3>
+                    Make a complete assessment
+                    <br>
+                    without the spreadsheet.
+                </h3>
+
+                <p>
+                    Enter applicant, financial and credit
+                    information through a guided assessment flow.
+                </p>
+
+                <button
+                    class="hero-btn"
+                    id="heroStart"
+                    type="button"
+                >
+                    Start Assessment
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+            <div class="hero-visual">
+
+                <div class="score-ring">
+
+                    <div>
+                        <strong>82%</strong>
+                        <span>example</span>
                     </div>
-                    <button type="button" class="reset-form-top-btn" onclick="resetForm()" title="Clear and reset all form fields">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                            <path d="M3 3v5h5"></path>
-                        </svg>
-                        Reset Form
-                    </button>
+
                 </div>
 
-                <form id="loanForm">
-
-                    <!-- Applicant Information -->
-                    <h3 class="form-section-title">Applicant Information</h3>
-
-                    <div class="form-group">
-                        <label for="age">Age (years)</label>
-                        <input
-                            type="number"
-                            id="age"
-                            placeholder="e.g. 35"
-                            min="18"
-                            max="100"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="annualIncome">Annual Income ($)</label>
-                        <input
-                            type="number"
-                            id="annualIncome"
-                            placeholder="e.g. 75000"
-                            min="0"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="creditScore">Credit Score (300 - 850)</label>
-                        <input
-                            type="number"
-                            id="creditScore"
-                            placeholder="e.g. 720"
-                            min="300"
-                            max="850"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="employmentStatus">Employment Status</label>
-                        <select id="employmentStatus" required>
-                            <option value="">Select Employment Status</option>
-                            <option value="Employed">Employed</option>
-                            <option value="Self-Employed">Self-Employed</option>
-                            <option value="Unemployed">Unemployed</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="educationLevel">Education Level</label>
-                        <select id="educationLevel" required>
-                            <option value="">Select Education Level</option>
-                            <option value="High School">High School</option>
-                            <option value="Associate">Associate</option>
-                            <option value="Bachelor">Bachelor</option>
-                            <option value="Master">Master</option>
-                            <option value="Doctorate">Doctorate</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Loan Information -->
-                    <h3 class="form-section-title">Loan Information</h3>
-
-                    <div class="form-group">
-                        <label for="loanAmount">Requested Loan Amount ($)</label>
-                        <input
-                            type="number"
-                            id="loanAmount"
-                            placeholder="e.g. 25000"
-                            min="500"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="loanDuration">Loan Duration (months)</label>
-                        <input
-                            type="number"
-                            id="loanDuration"
-                            placeholder="e.g. 36"
-                            min="6"
-                            max="360"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="maritalStatus">Marital Status</label>
-                        <select id="maritalStatus" required>
-                            <option value="">Select Marital Status</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dependents">Number of Dependents</label>
-                        <input
-                            type="number"
-                            id="dependents"
-                            placeholder="e.g. 1"
-                            min="0"
-                            max="20"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="homeOwnership">Home Ownership Status</label>
-                        <select id="homeOwnership" required>
-                            <option value="">Select Home Ownership</option>
-                            <option value="Own">Own</option>
-                            <option value="Mortgage">Mortgage</option>
-                            <option value="Rent">Rent</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-
-                    <!-- Financial Information -->
-                    <h3 class="form-section-title">Financial & Credit History</h3>
-
-                    <div class="form-group">
-                        <label for="monthlyDebt">Monthly Debt Payments ($)</label>
-                        <input
-                            type="number"
-                            id="monthlyDebt"
-                            placeholder="e.g. 450"
-                            min="0"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dti">Debt-to-Income (DTI) Ratio</label>
-                        <input
-                            type="number"
-                            step="0.001"
-                            id="dti"
-                            placeholder="e.g. 0.25"
-                            min="0"
-                            max="1"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="bankruptcy">Bankruptcy History</label>
-                        <select id="bankruptcy" required>
-                            <option value="">Any Past Bankruptcy?</option>
-                            <option value="0">No (0)</option>
-                            <option value="1">Yes (1)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="previousDefaults">Previous Loan Defaults</label>
-                        <select id="previousDefaults" required>
-                            <option value="">Any Previous Defaults?</option>
-                            <option value="0">No (0)</option>
-                            <option value="1">Yes (1)</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="paymentHistory">Payment History Score</label>
-                        <input
-                            type="number"
-                            id="paymentHistory"
-                            placeholder="e.g. 28"
-                            min="0"
-                            required
-                        >
-                    </div>
-
-                    <button type="submit" class="submit-btn">
-                        Predict Loan Approval
-                    </button>
-
-                </form>
-
-                <!-- Prediction Result Card -->
-                <div id="result" class="result-card"></div>
-            </main>
-
-            <!-- RIGHT: Independent Sticky Sidebar Box for Sample Applicant Presets -->
-            <aside class="sidebar-card">
-                <div class="sidebar-header">
-                    <div class="sidebar-title-row">
-                        <h3>Sample Applicants</h3>
-                        <span class="preset-count">10 Presets</span>
-                    </div>
-                    <p>Click any profile to autofill the application parameters:</p>
-                </div>
-
-                <div class="sample-buttons">
-                    <button type="button" class="sample-btn" onclick="loadSample(0)">
-                        <span class="sample-badge strong">Approved</span>
-                        <div class="sample-info">
-                            <strong>Sample 1</strong>
-                            <span>Strong Profile ($95k, 760 FICO)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(1)">
-                        <span class="sample-badge strong">Approved</span>
-                        <div class="sample-info">
-                            <strong>Sample 2</strong>
-                            <span>High Income ($140k, 720 FICO)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(2)">
-                        <span class="sample-badge rejected">High Risk</span>
-                        <div class="sample-info">
-                            <strong>Sample 3</strong>
-                            <span>Low Credit (510 FICO, 1 Default)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(3)">
-                        <span class="sample-badge warning">Review</span>
-                        <div class="sample-info">
-                            <strong>Sample 4</strong>
-                            <span>High Debt ($1.8k/mo, 0.52 DTI)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(4)">
-                        <span class="sample-badge neutral">Moderate</span>
-                        <div class="sample-info">
-                            <strong>Sample 5</strong>
-                            <span>Young Applicant (Age 23, $10k Loan)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(5)">
-                        <span class="sample-badge strong">Approved</span>
-                        <div class="sample-info">
-                            <strong>Sample 6</strong>
-                            <span>Experienced (Age 58, $110k Income)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(6)">
-                        <span class="sample-badge rejected">High Risk</span>
-                        <div class="sample-info">
-                            <strong>Sample 7</strong>
-                            <span>Unemployed & Bankruptcy</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(7)">
-                        <span class="sample-badge neutral">Moderate</span>
-                        <div class="sample-info">
-                            <strong>Sample 8</strong>
-                            <span>Self-Employed ($60k, 650 FICO)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(8)">
-                        <span class="sample-badge strong">Approved</span>
-                        <div class="sample-info">
-                            <strong>Sample 9</strong>
-                            <span>Excellent Credit (800 FICO, $125k)</span>
-                        </div>
-                    </button>
-
-                    <button type="button" class="sample-btn" onclick="loadSample(9)">
-                        <span class="sample-badge warning">Review</span>
-                        <div class="sample-info">
-                            <strong>Sample 10</strong>
-                            <span>High Loan ($60k, 96 Months)</span>
-                        </div>
-                    </button>
-                </div>
-            </aside>
+            </div>
 
         </div>
 
-    </div>
 
-    <!-- Field Guide & Instructions Modal -->
-    <div id="guideModal" class="modal-overlay" onclick="handleModalOverlayClick(event)">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Field Guide & Feature Descriptions</h2>
-                <button type="button" class="modal-close-btn" onclick="closeGuideModal()" aria-label="Close modal">&times;</button>
+
+        <div class="section-heading">
+
+            <div>
+
+                <h3>
+                    How LoanIQ works
+                </h3>
+
+                <p>
+                    A simple four-stage assessment process.
+                </p>
+
             </div>
-            <div class="modal-body">
-                <div class="guide-intro">
-                    <h3>How It Works</h3>
-                    <p>Enter applicant details in the form or pick any pre-configured <strong>Sample Applicant</strong> from the right sidebar, then click <strong>Predict Loan Approval</strong>. The Machine Learning pipeline will preprocess the features, apply scaling, and evaluate the application to return an approval decision with its probability score.</p>
-                </div>
 
-                <h3 class="guide-section-heading">Feature & Label Descriptions</h3>
-                <div class="field-guide-grid">
-                    <div class="guide-card">
-                        <h4>Applicant Information</h4>
-                        <ul>
-                            <li><strong>Age:</strong> Age in years (18–100). Reflects financial maturity and career stage.</li>
-                            <li><strong>Annual Income ($):</strong> Total gross annual income. Higher earnings indicate higher repayment capacity.</li>
-                            <li><strong>Credit Score:</strong> FICO score (300–850). Scores above 700 signify strong credit reliability.</li>
-                            <li><strong>Employment Status:</strong> Current status (<em>Employed</em>, <em>Self-Employed</em>, <em>Unemployed</em>). Stable employment strongly supports approval.</li>
-                            <li><strong>Education Level:</strong> Highest completed level of education (<em>High School</em> to <em>Doctorate</em>).</li>
-                        </ul>
-                    </div>
-
-                    <div class="guide-card">
-                        <h4>Loan Information</h4>
-                        <ul>
-                            <li><strong>Requested Loan Amount ($):</strong> Total principal amount requested. Larger amounts relative to income carry higher risk.</li>
-                            <li><strong>Loan Duration (months):</strong> Loan repayment term (e.g. 12, 36, 60 months).</li>
-                            <li><strong>Marital Status:</strong> Legal marital status (<em>Single</em>, <em>Married</em>, <em>Divorced</em>, <em>Widowed</em>).</li>
-                            <li><strong>Number of Dependents:</strong> Count of individuals financially supported by the applicant.</li>
-                            <li><strong>Home Ownership:</strong> Current housing situation (<em>Own</em>, <em>Mortgage</em>, <em>Rent</em>, <em>Other</em>).</li>
-                        </ul>
-                    </div>
-
-                    <div class="guide-card">
-                        <h4>Financial & Credit History</h4>
-                        <ul>
-                            <li><strong>Monthly Debt Payments ($):</strong> Total ongoing recurring monthly payments (credit cards, existing loans, auto payments).</li>
-                            <li><strong>Debt-to-Income (DTI) Ratio:</strong> Monthly debt divided by gross monthly income (e.g. 0.20 = 20%). Ratios under 0.36 are considered healthy.</li>
-                            <li><strong>Bankruptcy History:</strong> Whether the applicant has ever filed for bankruptcy (<em>0 = No</em>, <em>1 = Yes</em>).</li>
-                            <li><strong>Previous Loan Defaults:</strong> Whether the applicant ever failed to repay a loan previously (<em>0 = No</em>, <em>1 = Yes</em>).</li>
-                            <li><strong>Payment History Score:</strong> Track record score of on-time payments (0–30+). Higher scores mean reliable repayment history.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="modal-action-btn" onclick="closeGuideModal()">Close Guide</button>
-            </div>
         </div>
-    </div>
 
-    <script src="/static/script.js"></script>
+
+
+        <div class="process-grid">
+
+            <div class="process-card">
+
+                <span class="process-number">
+                    01
+                </span>
+
+                <h4>
+                    Applicant
+                </h4>
+
+                <p>
+                    Enter basic applicant information.
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <span class="process-number">
+                    02
+                </span>
+
+                <h4>
+                    Financial
+                </h4>
+
+                <p>
+                    Provide income, loan and debt information.
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <span class="process-number">
+                    03
+                </span>
+
+                <h4>
+                    Credit
+                </h4>
+
+                <p>
+                    Review credit and repayment history.
+                </p>
+
+            </div>
+
+
+            <div class="process-card">
+
+                <span class="process-number">
+                    04
+                </span>
+
+                <h4>
+                    Decision
+                </h4>
+
+                <p>
+                    Receive the model's approval assessment.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ASSESSMENT
+         ================================================= -->
+
+    <section
+        class="page"
+        id="assessmentPage"
+    >
+
+        <header class="page-header compact-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    NEW ASSESSMENT
+                </p>
+
+                <h2>
+                    Evaluate a loan application
+                </h2>
+
+                <p class="page-description">
+                    Complete the information below to generate
+                    an assessment.
+                </p>
+
+            </div>
+
+
+            <button
+                class="secondary-btn"
+                id="resetAssessment"
+                type="button"
+            >
+                Reset
+            </button>
+
+        </header>
+
+
+
+        <!-- Progress -->
+
+        <div class="progress-container">
+
+            <div
+                class="progress-step active"
+                data-step="1"
+            >
+
+                <span>1</span>
+
+                <div>
+
+                    <strong>
+                        Applicant
+                    </strong>
+
+                    <small>
+                        Personal information
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div
+                class="progress-step"
+                data-step="2"
+            >
+
+                <span>2</span>
+
+                <div>
+
+                    <strong>
+                        Financial
+                    </strong>
+
+                    <small>
+                        Income & loan
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div
+                class="progress-step"
+                data-step="3"
+            >
+
+                <span>3</span>
+
+                <div>
+
+                    <strong>
+                        Credit
+                    </strong>
+
+                    <small>
+                        History & debt
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-line"></div>
+
+
+            <div
+                class="progress-step"
+                data-step="4"
+            >
+
+                <span>4</span>
+
+                <div>
+
+                    <strong>
+                        Review
+                    </strong>
+
+                    <small>
+                        Check application
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <form
+            id="loanForm"
+            novalidate
+        >
+
+
+            <!-- =========================================
+                 STEP 1
+                 ========================================= -->
+
+            <div
+                class="assessment-step active"
+                data-step-content="1"
+            >
+
+                <div class="form-card">
+
+                    <div class="form-card-header">
+
+                        <div>
+
+                            <span class="step-kicker">
+                                STEP 01
+                            </span>
+
+                            <h3>
+                                Applicant information
+                            </h3>
+
+                            <p>
+                                Tell us a little about the applicant.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-grid">
+
+
+                        <div class="field">
+
+                            <label for="age">
+                                Age
+                            </label>
+
+                            <input
+                                type="number"
+                                id="age"
+                                min="18"
+                                max="100"
+                                placeholder="e.g. 35"
+                                required
+                            >
+
+                            <small>
+                                Applicant age in years.
+                            </small>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="employmentStatus">
+                                Employment status
+                            </label>
+
+                            <select
+                                id="employmentStatus"
+                                required
+                            >
+
+                                <option value="">
+                                    Select status
+                                </option>
+
+                                <option value="Employed">
+                                    Employed
+                                </option>
+
+                                <option value="Self-Employed">
+                                    Self-employed
+                                </option>
+
+                                <option value="Unemployed">
+                                    Unemployed
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="educationLevel">
+                                Education level
+                            </label>
+
+                            <select
+                                id="educationLevel"
+                                required
+                            >
+
+                                <option value="">
+                                    Select education
+                                </option>
+
+                                <option value="High School">
+                                    High School
+                                </option>
+
+                                <option value="Associate">
+                                    Associate
+                                </option>
+
+                                <option value="Bachelor">
+                                    Bachelor
+                                </option>
+
+                                <option value="Master">
+                                    Master
+                                </option>
+
+                                <option value="Doctorate">
+                                    Doctorate
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label>
+                                Marital status
+                            </label>
+
+                            <div class="choice-grid">
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Single"
+                                    data-target="maritalStatus"
+                                >
+                                    Single
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Married"
+                                    data-target="maritalStatus"
+                                >
+                                    Married
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Divorced"
+                                    data-target="maritalStatus"
+                                >
+                                    Divorced
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Widowed"
+                                    data-target="maritalStatus"
+                                >
+                                    Widowed
+                                </button>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="maritalStatus"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="dependents">
+                                Number of dependents
+                            </label>
+
+                            <div class="stepper">
+
+                                <button
+                                    type="button"
+                                    class="stepper-btn"
+                                    data-action="decrease"
+                                    data-target="dependents"
+                                >
+                                    −
+                                </button>
+
+                                <input
+                                    type="number"
+                                    id="dependents"
+                                    value="0"
+                                    min="0"
+                                    required
+                                >
+
+                                <button
+                                    type="button"
+                                    class="stepper-btn"
+                                    data-action="increase"
+                                    data-target="dependents"
+                                >
+                                    +
+                                </button>
+
+                            </div>
+
+                            <small>
+                                People financially supported
+                                by the applicant.
+                            </small>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label>
+                                Home ownership
+                            </label>
+
+                            <div class="choice-grid">
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Own"
+                                    data-target="homeOwnershipStatus"
+                                >
+                                    Own
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Mortgage"
+                                    data-target="homeOwnershipStatus"
+                                >
+                                    Mortgage
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Rent"
+                                    data-target="homeOwnershipStatus"
+                                >
+                                    Rent
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="choice-btn"
+                                    data-value="Other"
+                                    data-target="homeOwnershipStatus"
+                                >
+                                    Other
+                                </button>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="homeOwnershipStatus"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="step-actions">
+
+                    <span></span>
+
+                    <button
+                        type="button"
+                        class="primary-btn next-btn"
+                        data-next="2"
+                    >
+                        Continue
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 STEP 2
+                 ========================================= -->
+
+            <div
+                class="assessment-step"
+                data-step-content="2"
+            >
+
+                <div class="form-card">
+
+                    <div class="form-card-header">
+
+                        <div>
+
+                            <span class="step-kicker">
+                                STEP 02
+                            </span>
+
+                            <h3>
+                                Financial profile
+                            </h3>
+
+                            <p>
+                                Help us understand the applicant's
+                                financial position.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-grid">
+
+
+                        <div class="field">
+
+                            <label for="annualIncome">
+                                Annual income
+                            </label>
+
+                            <div class="input-prefix">
+
+                                <span>$</span>
+
+                                <input
+                                    type="number"
+                                    id="annualIncome"
+                                    min="0"
+                                    placeholder="75,000"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="loanAmount">
+                                Requested loan amount
+                            </label>
+
+                            <div class="input-prefix">
+
+                                <span>$</span>
+
+                                <input
+                                    type="number"
+                                    id="loanAmount"
+                                    min="0"
+                                    placeholder="25,000"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field full-width">
+
+                            <div class="label-row">
+
+                                <label for="loanDuration">
+                                    Loan duration
+                                </label>
+
+                                <strong>
+                                    <span id="durationValue">
+                                        36
+                                    </span>
+                                    months
+                                </strong>
+
+                            </div>
+
+                            <input
+                                type="range"
+                                id="loanDuration"
+                                min="12"
+                                max="120"
+                                step="12"
+                                value="36"
+                                required
+                            >
+
+                            <div class="range-labels">
+
+                                <span>
+                                    12 months
+                                </span>
+
+                                <span>
+                                    120 months
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="monthlyDebtPayments">
+                                Monthly debt payments
+                            </label>
+
+                            <div class="input-prefix">
+
+                                <span>$</span>
+
+                                <input
+                                    type="number"
+                                    id="monthlyDebtPayments"
+                                    min="0"
+                                    placeholder="450"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field">
+
+                            <label for="dti">
+                                Debt-to-income ratio
+                            </label>
+
+                            <div class="label-row">
+
+                                <span class="field-info">
+                                    Existing debt compared with
+                                    gross monthly income.
+                                </span>
+
+                                <strong>
+                                    <span id="dtiValue">
+                                        25
+                                    </span>%
+                                </strong>
+
+                            </div>
+
+                            <input
+                                type="range"
+                                id="dti"
+                                min="0"
+                                max="100"
+                                step="1"
+                                value="25"
+                                required
+                            >
+
+                            <div class="range-labels">
+
+                                <span>0%</span>
+                                <span>100%</span>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="dtiRaw"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="step-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-btn back-btn"
+                        data-back="1"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="primary-btn next-btn"
+                        data-next="3"
+                    >
+                        Continue
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 STEP 3
+                 ========================================= -->
+
+            <div
+                class="assessment-step"
+                data-step-content="3"
+            >
+
+                <div class="form-card">
+
+                    <div class="form-card-header">
+
+                        <div>
+
+                            <span class="step-kicker">
+                                STEP 03
+                            </span>
+
+                            <h3>
+                                Credit & repayment history
+                            </h3>
+
+                            <p>
+                                Review the applicant's credit
+                                behaviour and payment history.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-grid">
+
+
+                        <div class="field full-width">
+
+                            <div class="label-row">
+
+                                <label for="creditScore">
+                                    Credit score
+                                </label>
+
+                                <strong id="creditScoreValue">
+                                    720
+                                </strong>
+
+                            </div>
+
+                            <input
+                                type="range"
+                                id="creditScore"
+                                min="300"
+                                max="850"
+                                value="720"
+                                required
+                            >
+
+                            <div class="range-labels">
+
+                                <span>300</span>
+                                <span>850</span>
+
+                            </div>
+
+                            <div
+                                class="credit-indicator"
+                                id="creditIndicator"
+                            >
+                                Strong credit profile
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field full-width">
+
+                            <div class="label-row">
+
+                                <label for="paymentHistory">
+                                    Payment history
+                                </label>
+
+                                <strong>
+                                    <span id="paymentHistoryValue">
+                                        28
+                                    </span>
+                                    / 30
+                                </strong>
+
+                            </div>
+
+                            <input
+                                type="range"
+                                id="paymentHistory"
+                                min="0"
+                                max="30"
+                                value="28"
+                                required
+                            >
+
+                            <div class="range-labels">
+
+                                <span>0</span>
+                                <span>30</span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="field full-width">
+
+                            <label>
+                                Previous loan defaults?
+                            </label>
+
+                            <div class="binary-choice">
+
+                                <button
+                                    type="button"
+                                    class="binary-btn"
+                                    data-value="0"
+                                    data-target="previousDefaults"
+                                >
+                                    <span>✓</span>
+                                    No previous defaults
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="binary-btn"
+                                    data-value="1"
+                                    data-target="previousDefaults"
+                                >
+                                    <span>!</span>
+                                    Yes, previous defaults
+                                </button>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="previousDefaults"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <div class="field full-width">
+
+                            <label>
+                                Previous bankruptcy?
+                            </label>
+
+                            <div class="binary-choice">
+
+                                <button
+                                    type="button"
+                                    class="binary-btn"
+                                    data-value="0"
+                                    data-target="bankruptcy"
+                                >
+                                    <span>✓</span>
+                                    No previous bankruptcy
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="binary-btn"
+                                    data-value="1"
+                                    data-target="bankruptcy"
+                                >
+                                    <span>!</span>
+                                    Yes, previous bankruptcy
+                                </button>
+
+                            </div>
+
+                            <input
+                                type="hidden"
+                                id="bankruptcy"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="step-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-btn back-btn"
+                        data-back="2"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="primary-btn next-btn"
+                        data-next="4"
+                    >
+                        Review Application
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================================
+                 STEP 4
+                 ========================================= -->
+
+            <div
+                class="assessment-step"
+                data-step-content="4"
+            >
+
+                <div class="form-card review-card">
+
+                    <div class="form-card-header">
+
+                        <div>
+
+                            <span class="step-kicker">
+                                STEP 04
+                            </span>
+
+                            <h3>
+                                Review application
+                            </h3>
+
+                            <p>
+                                Check the information before
+                                running the assessment.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Applicant -->
+
+                    <div class="review-section">
+
+                        <div class="review-heading">
+
+                            <h4>
+                                Applicant
+                            </h4>
+
+                            <button
+                                type="button"
+                                class="text-btn edit-section"
+                                data-step="1"
+                            >
+                                Edit
+                            </button>
+
+                        </div>
+
+                        <div
+                            class="review-grid"
+                            id="applicantReview"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- Financial -->
+
+                    <div class="review-section">
+
+                        <div class="review-heading">
+
+                            <h4>
+                                Financial profile
+                            </h4>
+
+                            <button
+                                type="button"
+                                class="text-btn edit-section"
+                                data-step="2"
+                            >
+                                Edit
+                            </button>
+
+                        </div>
+
+                        <div
+                            class="review-grid"
+                            id="financialReview"
+                        ></div>
+
+                    </div>
+
+
+
+                    <!-- Credit -->
+
+                    <div class="review-section">
+
+                        <div class="review-heading">
+
+                            <h4>
+                                Credit & history
+                            </h4>
+
+                            <button
+                                type="button"
+                                class="text-btn edit-section"
+                                data-step="3"
+                            >
+                                Edit
+                            </button>
+
+                        </div>
+
+                        <div
+                            class="review-grid"
+                            id="creditReview"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="step-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-btn back-btn"
+                        data-back="3"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-btn submit-btn"
+                    >
+                        Run Risk Assessment
+                        <span>→</span>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+
+        <!-- Loading -->
+
+        <div
+            class="loading-overlay"
+            id="loadingOverlay"
+        >
+
+            <div class="loading-card">
+
+                <div class="spinner"></div>
+
+                <h3>
+                    Assessing application
+                </h3>
+
+                <p>
+                    Running the LoanIQ model...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RESULTS
+         ================================================= -->
+
+    <section
+        class="page"
+        id="resultsPage"
+    >
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    ASSESSMENT RESULT
+                </p>
+
+                <h2>
+                    Loan risk assessment
+                </h2>
+
+                <p class="page-description">
+                    Assessment generated from the submitted
+                    application.
+                </p>
+
+            </div>
+
+
+            <button
+                class="secondary-btn"
+                id="resultNewAssessment"
+                type="button"
+            >
+                New Assessment
+            </button>
+
+        </header>
+
+
+
+        <!-- Result Hero -->
+
+        <div
+            class="result-hero"
+            id="resultHero"
+        >
+
+            <div class="result-main">
+
+                <span class="result-kicker">
+                    MODEL ASSESSMENT
+                </span>
+
+                <h3 id="resultTitle">
+                    Approved
+                </h3>
+
+                <p id="resultMessage">
+                    The model predicts a positive approval
+                    outcome for this application.
+                </p>
+
+            </div>
+
+
+            <div class="probability-card">
+
+                <span>
+                    Approval probability
+                </span>
+
+                <strong id="probabilityValue">
+                    82.4%
+                </strong>
+
+                <div class="probability-track">
+
+                    <div
+                        class="probability-fill"
+                        id="probabilityFill"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             FEEDBACK SECTION
+             ================================================= -->
+
+        <div class="feedback-section">
+
+            <div class="section-heading feedback-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        APPLICATION FEEDBACK
+                    </p>
+
+                    <h3>
+                        What is going well?
+                    </h3>
+
+                    <p>
+                        Positive aspects identified from
+                        the submitted application.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="feedback-grid"
+                id="strengthsContainer"
+            >
+
+                
+                    script.js will populate this section.
+
+                    Example structure:
+
+                    <div class="feedback-card positive">
+                        <div class="feedback-icon">✓</div>
+                        <div>
+                            <h4>Strong credit profile</h4>
+                            <p>
+                                Your credit score is a strong
+                                part of this application.
+                            </p>
+                        </div>
+                    </div>
+                
+
+            </div>
+
+
+
+            <div class="section-heading feedback-heading improvement-heading">
+
+                <div>
+
+                    <p class="eyebrow">
+                        AREAS TO IMPROVE
+                    </p>
+
+                    <h3>
+                        What could be stronger?
+                    </h3>
+
+                    <p>
+                        Factors that may be worth improving
+                        for future applications.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div
+                class="feedback-grid"
+                id="improvementsContainer"
+            >
+
+                
+                    script.js will populate this section.
+
+                    Example structure:
+
+                    <div class="feedback-card negative">
+                        <div class="feedback-icon">!</div>
+                        <div>
+                            <h4>High debt-to-income ratio</h4>
+                            <p>
+                                Reducing existing debt relative
+                                to income could strengthen your
+                                financial profile.
+                            </p>
+                        </div>
+                    </div>
+                
+
+            </div>
+
+
+
+            <!-- Key Focus -->
+
+            <div
+                class="focus-card"
+                id="focusCard"
+            >
+
+                <div class="focus-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <span class="focus-label">
+                        KEY FOCUS
+                    </span>
+
+                    <h3 id="focusTitle">
+                        Your assessment focus
+                    </h3>
+
+                    <p id="focusMessage">
+                        Feedback will appear here after
+                        the assessment is completed.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             RESULT DETAILS
+             ================================================= -->
+
+        <div class="result-grid">
+
+            <div class="result-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <span class="panel-kicker">
+                            APPLICATION
+                        </span>
+
+                        <h3>
+                            Application summary
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="result-summary-grid"
+                    id="resultSummary"
+                ></div>
+
+            </div>
+
+
+
+            <div class="result-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <span class="panel-kicker">
+                            IMPORTANT
+                        </span>
+
+                        <h3>
+                            Assessment note
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="assessment-note">
+
+                    <div class="note-icon">
+                        i
+                    </div>
+
+                    <p>
+                        This result is a machine-learning
+                        prediction based on the information
+                        supplied. It should not be treated as
+                        a guaranteed lending decision.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SAMPLE CASES
+         ================================================= -->
+
+    <section
+        class="page"
+        id="samplesPage"
+    >
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    SAMPLE CASES
+                </p>
+
+                <h2>
+                    Explore example applicants
+                </h2>
+
+                <p class="page-description">
+                    Use predefined profiles to understand how
+                    different applications are assessed.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="sample-grid">
+
+
+            <button
+                class="sample-card"
+                data-sample="0"
+                type="button"
+            >
+
+                <span class="sample-status approved">
+                    Approved
+                </span>
+
+                <h3>
+                    Strong applicant
+                </h3>
+
+                <p>
+                    High income with strong credit and
+                    payment history.
+                </p>
+
+                <span class="sample-action">
+                    Use case →
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="sample-card"
+                data-sample="1"
+                type="button"
+            >
+
+                <span class="sample-status risk">
+                    High Risk
+                </span>
+
+                <h3>
+                    Credit challenges
+                </h3>
+
+                <p>
+                    Lower credit score with previous
+                    repayment issues.
+                </p>
+
+                <span class="sample-action">
+                    Use case →
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="sample-card"
+                data-sample="2"
+                type="button"
+            >
+
+                <span class="sample-status approved">
+                    Approved
+                </span>
+
+                <h3>
+                    High income
+                </h3>
+
+                <p>
+                    Strong income and a relatively modest
+                    requested loan.
+                </p>
+
+                <span class="sample-action">
+                    Use case →
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="sample-card"
+                data-sample="3"
+                type="button"
+            >
+
+                <span class="sample-status review">
+                    Review
+                </span>
+
+                <h3>
+                    High loan amount
+                </h3>
+
+                <p>
+                    A larger requested loan with a longer
+                    repayment term.
+                </p>
+
+                <span class="sample-action">
+                    Use case →
+                </span>
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MODEL
+         ================================================= -->
+
+    <section
+        class="page"
+        id="modelPage"
+    >
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    MODEL
+                </p>
+
+                <h2>
+                    LoanIQ model
+                </h2>
+
+                <p class="page-description">
+                    Overview of the prediction pipeline used
+                    by the application.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="model-card">
+
+            <div class="model-header">
+
+                <div class="model-symbol">
+                    ML
+                </div>
+
+                <div>
+
+                    <span class="panel-kicker">
+                        CURRENT MODEL
+                    </span>
+
+                    <h3>
+                        Logistic Regression
+                    </h3>
+
+                    <p>
+                        Classification model used for
+                        loan approval prediction.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="pipeline">
+
+
+                <div class="pipeline-step">
+
+                    <span>
+                        01
+                    </span>
+
+                    <strong>
+                        Application Data
+                    </strong>
+
+                    <small>
+                        Applicant & financial inputs
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <span>
+                        02
+                    </span>
+
+                    <strong>
+                        Preprocessing
+                    </strong>
+
+                    <small>
+                        Feature transformation
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <span>
+                        03
+                    </span>
+
+                    <strong>
+                        Scaling
+                    </strong>
+
+                    <small>
+                        Numerical normalization
+                    </small>
+
+                </div>
+
+
+                <div class="pipeline-arrow">
+                    →
+                </div>
+
+
+                <div class="pipeline-step">
+
+                    <span>
+                        04
+                    </span>
+
+                    <strong>
+                        Prediction
+                    </strong>
+
+                    <small>
+                        Approval probability
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    ✓
+                </span>
+
+                <h3>
+                    Consistent pipeline
+                </h3>
+
+                <p>
+                    Application data passes through the saved
+                    preprocessing, scaling and model artifacts.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    %
+                </span>
+
+                <h3>
+                    Probability output
+                </h3>
+
+                <p>
+                    The model can provide an approval probability
+                    when probability estimates are available.
+                </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <span class="info-icon">
+                    i
+                </span>
+
+                <h3>
+                    Interpret with care
+                </h3>
+
+                <p>
+                    The prediction is an ML assessment and should
+                    not be presented as a guaranteed lending decision.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ABOUT
+         ================================================= -->
+
+    <section
+        class="page"
+        id="aboutPage"
+    >
+
+        <header class="page-header">
+
+            <div>
+
+                <p class="eyebrow">
+                    ABOUT LOANIQ
+                </p>
+
+                <h2>
+                    Built for clearer loan assessment
+                </h2>
+
+                <p class="page-description">
+                    LoanIQ combines a trained machine-learning
+                    pipeline with a guided assessment interface.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <div class="about-card">
+
+            <div class="about-mark">
+                L
+            </div>
+
+
+            <div>
+
+                <h3>
+                    From raw features to a usable
+                    decision experience.
+                </h3>
+
+                <p>
+                    LoanIQ accepts applicant, financial and
+                    credit information, preprocesses the data
+                    and sends it through the trained prediction
+                    pipeline.
+                </p>
+
+                <p>
+                    The interface is designed to keep technical
+                    model details behind the scenes while
+                    presenting the information in a way that
+                    is easier for a person to understand and review.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+```
+
+</div>
+
+<script src="/static/script.js"></script>
 
 </body>
-
 </html>
